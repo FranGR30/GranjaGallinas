@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nombre de granjero</th>
+					<th>Dinero</th>
+					<th>Cantidad de gallinas</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="granjero: ${granjeros}">
+					<td th:text="${granjero.id}"></td>
+					<td th:text="${granjero.nombre}"></td>
+					<td th:text="${granjero.dinero}"></td>
+					<td th:text="${granjero.cantGallinas()}"></td>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
