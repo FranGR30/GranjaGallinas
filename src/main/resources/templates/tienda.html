@@ -24,62 +24,86 @@
 					</tr>
 				</tbody>
 			</table>
+
 		</div>
 		<div>
-			<h3>Gallina</h3>
-			<div>
-				<img th:src="@{/imagen/gallina.png}" alt="gallina" width="200px" height="200px"/>
+			<div class="">
+				<div class="card w-50 h-75" style="float: left">
+					<div class="d-flex justify-content-center">
+						<h3 class="card-title">Gallina</h3>
+					</div>
+					<div class="d-flex justify-content-center">
+						<img th:src="@{/imagen/gallina.png}" alt="gallina" width="200px"
+							height="200px" />
+					</div>
+					<div class="d-flex justify-content-center flex-row">
+						<a type="button"
+							class="btn btn-success text-center fs-2 fw-bold w-25"
+							th:href="@{'/tienda/sumar/' + ${granjero.id} + '/' + ${cantGallinaTienda} + '/' + ${cantHuevoTienda} + '/' + ${0}}"
+							th:text="'+'"></a>
+						<h3 th:text="${cantGallinaTienda}" class="m-3 text-center fs-2"></h3>
+						<a type="button"
+							class="btn btn-danger text-center fs-2 fw-bold w-25"
+							th:href="@{'/tienda/restar/' + ${granjero.id} + '/' + ${cantGallinaTienda} + '/' + ${cantHuevoTienda} + '/' + ${0}}"
+							th:text="' - '"></a>
+					</div>
+					<div class="d-flex justify-content-center m-2">
+						<a type="button" class="btn btn-primary m-2 w-25"
+							th:href="@{'/tienda/comprar/' + ${granjero.id} + '/' + ${cantGallinaTienda} + '/' + ${cantHuevoTienda} + '/' + ${0}}"
+							th:text="'Comprar gallina'"></a> <a type="button"
+							class="btn btn-primary m-2 w-25"
+							th:href="@{'/tienda/vender/' + ${granjero.id} + '/' + ${cantGallinaTienda} + '/' + ${cantHuevoTienda} + '/' + ${0}}"
+							th:text="'Vender gallina'"></a>
+					</div>
+					<div th:if="${mensajeGallina}" th:text="${mensajeGallina}"
+						class="alert alert-danger d-flex justify-content-center"
+						role="alert"></div>
+				</div>
+				<div class="card w-50 h-75" style="float: right">
+					<div class="d-flex justify-content-center">
+						<h3 class="card-title">Huevo</h3>
+					</div>
+					<div class="d-flex justify-content-center">
+						<img th:src="@{/imagen/huevo.png}" alt="huevo" width="200px"
+							height="200px" />
+					</div>
+					<div>
+						<div class="d-flex justify-content-center flex-row mb-2 ">
+							<a type="button"
+								class="btn btn-success text-center fs-2 fw-bold w-25"
+								th:href="@{'/tienda/sumar/' + ${granjero.id} + '/' + ${cantGallinaTienda} + '/' + ${cantHuevoTienda} + '/' + ${1}}"
+								th:text="'+'"></a>
+							<h3 th:text="${cantHuevoTienda}" class="m-3 text-center fs-2"></h3>
+							<a type="button"
+								class="btn btn-danger text-center fs-2 fw-bold w-25"
+								th:href="@{'/tienda/restar/' + ${granjero.id} + '/' + ${cantGallinaTienda} + '/' + ${cantHuevoTienda} + '/' + ${1}}"
+								th:text="' - '"></a>
+						</div>
+						<div class="d-flex justify-content-center m-2">
+							<a type="button" class="btn btn-primary m-2 w-25"
+								th:href="@{'/tienda/comprar/' + ${granjero.id} + '/' + ${cantGallinaTienda} + '/' + ${cantHuevoTienda} + '/' + ${1}}"
+								th:text="'Comprar huevo'"></a> <a type="button"
+								class="btn btn-primary m-2 w-25"
+								th:href="@{'/tienda/vender/' + ${granjero.id} + '/' + ${cantGallinaTienda} + '/' + ${cantHuevoTienda} + '/' + ${1}}"
+								th:text="'Vender huevo'"></a>
+						</div>
+						<div th:if="${mensajeHuevo}" th:text="${mensajeHuevo}"
+							class="alert alert-danger d-flex justify-content-center"
+							role="alert"></div>
+					</div>
+				</div>
 			</div>
-			<div display="inline-block">
-			<form th:action="@{'/granja/comprarGallina/' + ${granjero.id}}"
-				th:object="${granjero}">
-				<div class="form-group row">
-					<div class="col-sm-6">
-						<input type="submit" value="Comprar gallina" class="btn btn-dark" />
-					</div>
-					<h4 th:if="${granjero.getDinero() == 0}" th:text="${mensaje}"></h4>
-				</div>
-				<br>
-			</form>
-			<form th:action="@{'/granja/venderGallina/' + ${granjero.id}}"
-				th:object="${granjero}">
-				<div class="form-group row">
-					<div class="col-sm-6">
-						<input type="submit" value="Vender gallina" class="btn btn-dark" />
-					</div>
-					<h4 th:if="${granjero.getGallinas().size() == 0}"
-						th:text="${mensaje}"></h4>
-				</div>
-			</form>
+			<div
+				class="d-flex align-items-baseline justify-content-center w-100"
+				style="float: bottom">
+				<a type="button" class="btn btn-primary btn-sm w-50 m-2"
+					th:href="@{'/granja/' + ${granjero.id}}"
+					th:text="'Volver a granja'"></a>
 			</div>
-		</div>
-		<div>
-			<h3>Huevo</h3>
-			<div>
-				<img th:src="@{/imagen/huevo.png}" alt="huevo" width="150px" height="150px"/>
-			</div>
-			<form th:action="@{'/granja/comprarGallina/' + ${granjero.id}}"
-				th:object="${granjero}">
-				<div class="form-group row">
-					<div class="col-sm-6">
-						<input type="submit" value="Comprar gallina" class="btn btn-dark" />
-					</div>
-					<h4 th:if="${granjero.getDinero() == 0}" th:text="${mensaje}"></h4>
-				</div>
-				<br>
-			</form>
-			<form th:action="@{'/granja/venderGallina/' + ${granjero.id}}"
-				th:object="${granjero}">
-				<div class="form-group row">
-					<div class="col-sm-6">
-						<input type="submit" value="Vender gallina" class="btn btn-dark" />
-					</div>
-					<h4 th:if="${granjero.getGallinas().size() == 0}"
-						th:text="${mensaje}"></h4>
-				</div>
-			</form>
 		</div>
 	</div>
+
+
 	<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>

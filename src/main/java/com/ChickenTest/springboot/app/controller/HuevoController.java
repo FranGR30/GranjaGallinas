@@ -20,6 +20,9 @@ public class HuevoController {
 	public String listar(@PathVariable(value = "id") Long idGranjero, Model model) {
 		Granjero granjero = null;
 		granjero = granjeroService.findOne(idGranjero);
+		if (granjero.getHuevos().size() == 0) {
+			model.addAttribute("mensaje", "No hay huevos en la granja");
+		}
 		model.addAttribute("titulo", "Listado de huevos");
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("listaHuevos", granjero.getHuevos());

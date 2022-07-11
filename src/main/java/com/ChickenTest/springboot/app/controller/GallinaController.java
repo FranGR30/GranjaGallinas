@@ -20,6 +20,9 @@ public class GallinaController {
 	public String listar(@PathVariable(value = "id") Long id, Model model) {
 		Granjero granjero = null;
 		granjero = granjeroService.findOne(id);
+		if (granjero.getGallinas().size() == 0) {
+			model.addAttribute("mensaje", "No hay gallinas en la granja");
+		}
 		model.addAttribute("titulo", "Listado de gallinas");
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("listaGallinas", granjero.getGallinas());

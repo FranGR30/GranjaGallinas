@@ -21,7 +21,7 @@ public class GranjeroController {
 	@Autowired
 	private IGranjeroService granjeroService;
 
-	@RequestMapping(value = {"/index","","/"})
+	@RequestMapping(value = { "/index", "", "/" })
 	public String crear(Map<String, Object> model) {
 		Granjero granjero = new Granjero();
 		model.put("granjero", granjero);
@@ -46,50 +46,101 @@ public class GranjeroController {
 		model.addAttribute("titulo", "Granja");
 		return "granja";
 	}
-	
+
 	@RequestMapping(value = "/listar")
 	public String listar(Model model) {
 		model.addAttribute("titulo", "Listado de granjeros");
 		model.addAttribute("granjeros", granjeroService.findAll());
 		return "listar";
 	}
-	
-	@RequestMapping(value = "/granja/comprarGallina/{id}")
-	public String comprarGallina(@PathVariable(value = "id") Long id, Model model) {
+
+	@RequestMapping(value = "/tienda/comprar/{id}/{cantGallinaTienda}/{cantHuevoTienda}/{tipo}")
+	public String comprar(@PathVariable(value = "id") Long id,
+			@PathVariable(value = "cantGallinaTienda") int cantGallinaTienda,
+			@PathVariable(value = "cantHuevoTienda") int cantHuevoTienda, @PathVariable(value = "tipo") int tipo,
+			Model model) {
 		Granjero granjero = null;
 		granjero = granjeroService.findOne(id);
-		Gallina gallina = new Gallina();
-		gallina.setDiaMuerte(gallina.definirDiaMuerte());
-		gallina.setHuevosAPoner(gallina.definirHuevosAPoner());
-		if (granjero.getDinero() >= granjero.getPrecioGallinaCompra()) {
-			gallina.setGranjero(granjero);
-			granjero.addGallina(gallina);
-			granjero.setDinero(granjero.getDinero() - granjero.getPrecioGallinaCompra());
-			granjeroService.save(granjero);
-		}else {
-			model.addAttribute("mensaje", "Dinero insuficiente para comprar una gallina");
+		if (tipo == 0) {
+			if (cantGallinaTienda * granjero.getPrecioGallinaCompra() <= granjero.getDinero()) {
+				for (int i = 1; i <= cantGallinaTienda; i++) {
+					Gallina gallina = new Gallina();
+					gallina.setDiaMuerte(gallina.definirDiaMuerte());
+					gallina.setHuevosAPoner(gallina.definirHuevosAPoner());
+					gallina.setGranjero(granjero);
+					granjero.addGallina(gallina);
+					granjeroService.save(granjero);
+				}
+				granjero.setDinero(granjero.getDinero() - (granjero.getPrecioGallinaCompra() * cantGallinaTienda));
+				granjeroService.save(granjero);
+				cantGallinaTienda = 0;
+			} else {
+				model.addAttribute("mensajeGallina",
+						"Dinero insuficiente para comprar " + cantGallinaTienda + " gallina/s");
+			}
+		} else if (tipo == 1) {
+			if (cantHuevoTienda * granjero.getPrecioHuevoCompra() <= granjero.getDinero()) {
+				for (int i = 1; i <= cantHuevoTienda; i++) {
+					Huevo huevo = new Huevo();
+					huevo.setDiaNacimiento(huevo.diasParaNacer());
+					huevo.setGranjero(granjero);
+					granjero.addHuevo(huevo);
+					granjeroService.save(granjero);
+				}
+				granjero.setDinero(granjero.getDinero() - (cantHuevoTienda * granjero.getPrecioHuevoCompra()));
+				granjeroService.save(granjero);
+				cantHuevoTienda = 0;
+			} else {
+				model.addAttribute("mensajeHuevo", "Dinero insuficiente para comprar " + cantHuevoTienda + " huevo/s");
+			}
 		}
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("titulo", "Granja");
-		return "granja";
+		model.addAttribute("cantGallinaTienda", cantGallinaTienda);
+		model.addAttribute("cantHuevoTienda", cantHuevoTienda);
+		return "tienda";
 	}
-	
-	@RequestMapping(value = "/granja/venderGallina/{id}")
-	public String venderGallina(@PathVariable(value = "id") Long id, Model model) {
+
+	@RequestMapping(value = "/tienda/vender/{id}/{cantGallinaTienda}/{cantHuevoTienda}/{tipo}")
+	public String vender(@PathVariable(value = "id") Long id,
+			@PathVariable(value = "cantGallinaTienda") int cantGallinaTienda,
+			@PathVariable(value = "cantHuevoTienda") int cantHuevoTienda, 
+			@PathVariable(value = "tipo") int tipo,
+			Model model) {
 		Granjero granjero = null;
 		granjero = granjeroService.findOne(id);
-		if (granjero.getGallinas().size() >= 1) {
-			granjero.removeGallina();
-			granjero.setDinero(granjero.getDinero() + granjero.getPrecioGallinaVenta());
-			granjeroService.save(granjero);
-		}else {
-			model.addAttribute("mensaje", "No tienes gallinas para vender");
+		if (tipo == 0) {
+			if (granjero.getGallinas().size() >= cantGallinaTienda) {
+				for (int i = 1; i <= cantGallinaTienda; i++) {
+					granjero.removeGallina();
+					granjeroService.save(granjero);
+				}
+				granjero.setDinero(granjero.getDinero() + (granjero.getPrecioGallinaVenta() * cantGallinaTienda));
+				granjeroService.save(granjero);
+				cantGallinaTienda = 0;
+			} else {
+				model.addAttribute("mensajeGallina", "No tienes esa cantidad de gallinas");
+			}
+		}else if (tipo == 1) {
+			if (granjero.getHuevos().size() >= cantHuevoTienda) {
+				for (int i = 1; i <= cantHuevoTienda; i++) {
+					granjero.removeHuevo();
+					granjeroService.save(granjero);
+				}
+				granjero.setDinero(granjero.getDinero() + (granjero.getPrecioHuevoVenta() * cantHuevoTienda));
+				granjeroService.save(granjero);
+				cantHuevoTienda = 0;
+			}else {
+				model.addAttribute("mensajeHuevo", "No tienes esa cantidad de huevos");
+			}
 		}
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("titulo", "Granja");
-		return "granja";
+		model.addAttribute("cantGallinaTienda", cantGallinaTienda);
+		model.addAttribute("cantHuevoTienda", cantHuevoTienda);
+		return "tienda";
 	}
-	
+
 	@RequestMapping(value = "/granja/diaSiguiente/{id}")
 	public String diaSiguiente(@PathVariable(value = "id") Long id, Model model) {
 		Granjero granjero = null;
@@ -98,15 +149,15 @@ public class GranjeroController {
 		int contHuevoNuevo = 0;
 		int contGallinaNueva = 0;
 		if (!granjero.getGallinas().isEmpty()) {
-			for (int i = 0 ; i < granjero.getGallinas().size() ; i ++) {
+			for (int i = 0; i < granjero.getGallinas().size(); i++) {
 				Gallina gallina = granjero.getGallinas().get(i);
 				gallina.setDiasDeVida(gallina.getDiasDeVida() + 1);
 				if (gallina.getDiasDeVida() >= gallina.getDiaMuerte()) {
 					granjero.getGallinas().remove(i);
-					contGalinaRemove ++;					
+					contGalinaRemove++;
 				}
 				Random numAleatorio = new Random();
-				int ponerHuevo = numAleatorio.nextInt(2 - 0 + 1) + 0;
+				int ponerHuevo = numAleatorio.nextInt(1 - 0 + 1) + 0;
 				if (ponerHuevo == 1) {
 					if (gallina.getHuevosAPoner() > 0) {
 						gallina.setHuevosAPoner(gallina.getHuevosAPoner() - 1);
@@ -114,15 +165,14 @@ public class GranjeroController {
 						huevo.setGranjero(granjero);
 						huevo.setDiaNacimiento(huevo.diasParaNacer());
 						granjero.addHuevo(huevo);
-						contHuevoNuevo ++;
+						contHuevoNuevo++;
 					}
 				}
 			}
 			granjeroService.save(granjero);
 		}
-		System.out.println("test3");
 		if (!granjero.getHuevos().isEmpty()) {
-			for (int j = 0 ; j < granjero.getHuevos().size() ; j++) {
+			for (int j = 0; j < granjero.getHuevos().size(); j++) {
 				Huevo huevo = granjero.getHuevos().get(j);
 				huevo.setDiasDeVida(huevo.getDiasDeVida() + 1);
 				if (huevo.getDiaNacimiento() <= huevo.getDiasDeVida()) {
@@ -131,25 +181,73 @@ public class GranjeroController {
 					gallina.setDiaMuerte(gallina.definirDiaMuerte());
 					gallina.setHuevosAPoner(gallina.definirHuevosAPoner());
 					granjero.addGallina(gallina);
-					contGallinaNueva ++;
+					contGallinaNueva++;
 					granjero.getHuevos().remove(j);
 				}
 			}
 			granjeroService.save(granjero);
 		}
-		model.addAttribute("mensajeDiaSiguiente", "Durante el dia nacieron " + contGallinaNueva + " gallina/s, las gallinas pusieron " + contHuevoNuevo + " huevo/s y murieron " + contGalinaRemove + " gallina/s.");
+		model.addAttribute("mensajeDiaSiguiente",
+				"Durante el dia nacieron " + contGallinaNueva + " gallina/s, las gallinas pusieron " + contHuevoNuevo
+						+ " huevo/s y murieron " + contGalinaRemove + " gallina/s.");
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("titulo", "Granja");
 		return "granja";
 	}
-	
+
 	@RequestMapping(value = "/tienda/{id}")
-	public String ver(@PathVariable(value = "id") Long id, Model model) {
+	public String verTienda(@PathVariable(value = "id") Long id, Model model) {
 		Granjero granjero = null;
 		granjero = granjeroService.findOne(id);
+		int cantGallinaTienda = 0;
+		int cantHuevoTienda = 0;
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("titulo", "tienda");
+		model.addAttribute("cantGallinaTienda", cantGallinaTienda);
+		model.addAttribute("cantHuevoTienda", cantHuevoTienda);
 		return "tienda";
 	}
-	
+
+	@RequestMapping(value = "/tienda/sumar/{id}/{cantGallinaTienda}/{cantHuevoTienda}/{tipo}")
+	public String sumar(@PathVariable(value = "id") Long id,
+			@PathVariable(value = "cantGallinaTienda") int cantGallinaTienda,
+			@PathVariable(value = "cantHuevoTienda") int cantHuevoTienda, @PathVariable(value = "tipo") int tipo,
+			Model model) {
+		Granjero granjero = null;
+		granjero = granjeroService.findOne(id);
+		if (tipo == 0) {
+			cantGallinaTienda++;
+		} else if (tipo == 1) {
+			cantHuevoTienda++;
+		}
+		model.addAttribute("granjero", granjero);
+		model.addAttribute("titulo", "tienda");
+		model.addAttribute("cantGallinaTienda", cantGallinaTienda);
+		model.addAttribute("cantHuevoTienda", cantHuevoTienda);
+		return "tienda";
+	}
+
+	@RequestMapping(value = "/tienda/restar/{id}/{cantGallinaTienda}/{cantHuevoTienda}/{tipo}")
+	public String restar(@PathVariable(value = "id") Long id,
+			@PathVariable(value = "cantGallinaTienda") int cantGallinaTienda,
+			@PathVariable(value = "cantHuevoTienda") int cantHuevoTienda, @PathVariable(value = "tipo") int tipo,
+			Model model) {
+		Granjero granjero = null;
+		granjero = granjeroService.findOne(id);
+		if (tipo == 0) {
+			if (cantGallinaTienda > 0) {
+				cantGallinaTienda--;
+			}
+		} else if (tipo == 1) {
+			if (cantHuevoTienda > 0) {
+				cantHuevoTienda--;
+			}
+		}
+		model.addAttribute("granjero", granjero);
+		model.addAttribute("titulo", "tienda");
+		model.addAttribute("cantGallinaTienda", cantGallinaTienda);
+		model.addAttribute("cantHuevoTienda", cantHuevoTienda);
+		return "tienda";
+	}
+
 }

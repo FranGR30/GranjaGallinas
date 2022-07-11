@@ -20,39 +20,34 @@
 					<td th:text="${granjero.dinero}"></td>
 					<td th:text="${granjero.cantGallinas()}"></td>
 					<td th:text="${granjero.cantHuevos()}"></td>
-					<td><a class="btn btn-primary btn-sm" th:href="@{'/listarHuevos/' + ${granjero.id}}" th:text="'Ver huevos'"></a><a class="btn btn-primary btn-sm" th:href="@{'/listarGallinas/' + ${granjero.id}}" th:text="'Listar gallinas'"></a></td>
+					<td><a class="btn btn-primary btn-sm ms-1"
+						th:href="@{'/listarHuevos/' + ${granjero.id}}"
+						th:text="'Ver huevos'"></a>
+						<a class="btn btn-primary btn-sm ms-1"
+						th:href="@{'/listarGallinas/' + ${granjero.id}}"
+						th:text="'Ver gallinas'"></a></td>
 				</tr>
 			</tbody>
 		</table>
+		<div class="d-flex justify-content-center">
+			<img th:src="@{/imagen/granja.jpg}" alt="huevo" />
+		</div>
 		<div>
-		<form th:action="@{'/granja/comprarGallina/' + ${granjero.id}}" th:object="${granjero}">
-			<div class="form-group row">
-				<div class="col-sm-6">
-					<input type="submit" value="Comprar gallina"
-						class="btn btn-dark" />
-				</div>
-				<h4 th:if="${granjero.getDinero() == 0}" th:text="${mensaje}"></h4>
+			<div class="d-flex justify-content-center m-2">
+				<a type="button" class="btn btn-primary w-50"
+					th:href="@{'/tienda/' + ${granjero.id}}" th:text="'Tienda'"></a>
 			</div>
-			<br>
-		</form>
-		<form th:action="@{'/granja/venderGallina/' + ${granjero.id}}" th:object="${granjero}">
-			<div class="form-group row">
-				<div class="col-sm-6">
-					<input type="submit" value="Vender gallina"
-						class="btn btn-dark" />
+			<div >
+				<div class="d-flex justify-content-center m-2">
+					<a type="button" class="btn btn-success w-50"
+						th:href="@{'/granja/diaSiguiente/' + ${granjero.id}}"
+						th:text="'Dia siguiente'"></a>
 				</div>
-				<h4 th:if="${granjero.getGallinas().size() == 0}" th:text="${mensaje}"></h4>
+				<div class="d-flex justify-content-center">
+				<div th:if="${mensajeDiaSiguiente}" th:text="${mensajeDiaSiguiente}"
+					class="alert alert-info d-flex justify-content-center w-75" role="alert"></div>
+					</div>
 			</div>
-		</form>
-		<form th:action="@{'/granja/diaSiguiente/' + ${granjero.id}}" th:object="${granjero}">
-			<div class="form-group row">
-				<div class="col-sm-6">
-					<input type="submit" value="Dia siguiente"
-						class="btn btn-success btn-lg" />
-				</div>
-				<h4 th:text="${mensajeDiaSiguiente}"></h4>
-			</div>
-		</form>
 		</div>
 	</div>
 	<footer th:replace="layout/layout :: footer"></footer>

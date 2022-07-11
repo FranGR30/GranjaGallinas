@@ -21,6 +21,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<div>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -42,8 +43,12 @@
 				</tr>
 			</tbody>
 		</table>
-		<div>
-			<a class="btn btn-primary btn-sm"
+		<div th:if="${mensaje}" th:text="${mensaje}"
+					class="alert alert-danger d-flex justify-content-center"
+					role="alert"></div>
+		</div>
+		<div class="d-flex justify-content-center m-2">
+			<a type="button" class="btn btn-primary btn-sm w-50"
 				th:href="@{'/granja/' + ${granjero.id}}" th:text="'Volver a granja'"></a>
 		</div>
 	</div>

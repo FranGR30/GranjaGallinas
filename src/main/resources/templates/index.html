@@ -3,21 +3,31 @@
 <head th:replace="layout/layout :: head"></head>
 <body>
 	<header th:replace="layout/layout :: header"></header>
-	<div class="card bg-dark text-white">
-		<form th:action="@{/index}" th:object="${granjero}" method="post">
-			<div class="form-group row">
-				<label class="col-sm-2 col-form-label">Nombre de granjeroo</label>
-				<div class="col-sm-6">
-					<input type="text" th:field="*{nombre}" class="form-control" />
-				</div>
+	<div>
+		<div class="d-flex justify-content-center">
+			<img th:src="@{/imagen/granja.jpg}" alt="huevo" />
+		</div>
+		<div class="card">
+			<div class="d-flex justify-content-center">
+				<form th:action="@{/index}" th:object="${granjero}" method="post"
+					class="needs-validation">
+					<div class="">
+						<label class="">Nombre de granjero</label>
+						<div class="">
+							<input type="text" th:field="*{nombre}" class="form-control"
+								id="validationCustomNombre" aria-describedby="inputGroupPrepend"
+								required />
+						</div>
+					</div>
+					<div class="d-flex justify-content-center">
+						<div class="">
+							<input type="submit" value="Crear Granjero"
+								class="btn btn-success w-100" />
+						</div>
+					</div>
+				</form>
 			</div>
-			<div class="form-group row">
-				<div class="col-sm-6">
-					<input type="submit" value="Crear Granjero"
-						class="btn btn-secondary" />
-				</div>
-			</div>
-		</form>
+		</div>
 	</div>
 	<footer th:replace="layout/layout :: footer"></footer>
 </body>
