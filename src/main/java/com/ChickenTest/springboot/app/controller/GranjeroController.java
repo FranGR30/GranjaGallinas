@@ -35,6 +35,8 @@ public class GranjeroController {
 		granjero.setPrecioGallinaVenta(30);
 		granjero.setPrecioHuevoCompra(20);
 		granjero.setPrecioHuevoVenta(10);
+		granjero.setCantGallinasMax(10);
+		granjero.setCantHuevosMax(20);
 		granjeroService.save(granjero);
 		model.addAttribute("titulo", "Granja");
 		return "granja";
@@ -62,7 +64,11 @@ public class GranjeroController {
 		Granjero granjero = null;
 		granjero = granjeroService.findOne(id);
 		if (tipo == 0) {
-			if (cantGallinaTienda * granjero.getPrecioGallinaCompra() <= granjero.getDinero()) {
+			if ((granjero.getGallinas().size() + cantGallinaTienda) > granjero.getCantGallinasMax()) {
+				model.addAttribute("mensajeGallina",
+						"La cantidad de gallinas a comprar supera la cantidad maxima de gallinas posibles en granja ("
+								+ granjero.getCantGallinasMax() + " gallinas)");
+			} else if (cantGallinaTienda * granjero.getPrecioGallinaCompra() <= granjero.getDinero()) {
 				for (int i = 1; i <= cantGallinaTienda; i++) {
 					Gallina gallina = new Gallina();
 					gallina.setDiaMuerte(gallina.definirDiaMuerte());
@@ -79,7 +85,11 @@ public class GranjeroController {
 						"Dinero insuficiente para comprar " + cantGallinaTienda + " gallina/s");
 			}
 		} else if (tipo == 1) {
-			if (cantHuevoTienda * granjero.getPrecioHuevoCompra() <= granjero.getDinero()) {
+			if ((granjero.getHuevos().size() + cantHuevoTienda) > granjero.getCantHuevosMax()) {
+				model.addAttribute("mensajeHuevo",
+						"La cantidad de huevos a comprar supera la cantidad maxima de huevos posibles en granja ("
+								+ granjero.getCantHuevosMax() + " huevos)");
+			} else if (cantHuevoTienda * granjero.getPrecioHuevoCompra() <= granjero.getDinero()) {
 				for (int i = 1; i <= cantHuevoTienda; i++) {
 					Huevo huevo = new Huevo();
 					huevo.setDiaNacimiento(huevo.diasParaNacer());
@@ -104,8 +114,7 @@ public class GranjeroController {
 	@RequestMapping(value = "/tienda/vender/{id}/{cantGallinaTienda}/{cantHuevoTienda}/{tipo}")
 	public String vender(@PathVariable(value = "id") Long id,
 			@PathVariable(value = "cantGallinaTienda") int cantGallinaTienda,
-			@PathVariable(value = "cantHuevoTienda") int cantHuevoTienda, 
-			@PathVariable(value = "tipo") int tipo,
+			@PathVariable(value = "cantHuevoTienda") int cantHuevoTienda, @PathVariable(value = "tipo") int tipo,
 			Model model) {
 		Granjero granjero = null;
 		granjero = granjeroService.findOne(id);
@@ -121,7 +130,7 @@ public class GranjeroController {
 			} else {
 				model.addAttribute("mensajeGallina", "No tienes esa cantidad de gallinas");
 			}
-		}else if (tipo == 1) {
+		} else if (tipo == 1) {
 			if (granjero.getHuevos().size() >= cantHuevoTienda) {
 				for (int i = 1; i <= cantHuevoTienda; i++) {
 					granjero.removeHuevo();
@@ -130,7 +139,7 @@ public class GranjeroController {
 				granjero.setDinero(granjero.getDinero() + (granjero.getPrecioHuevoVenta() * cantHuevoTienda));
 				granjeroService.save(granjero);
 				cantHuevoTienda = 0;
-			}else {
+			} else {
 				model.addAttribute("mensajeHuevo", "No tienes esa cantidad de huevos");
 			}
 		}
@@ -160,12 +169,14 @@ public class GranjeroController {
 				int ponerHuevo = numAleatorio.nextInt(1 - 0 + 1) + 0;
 				if (ponerHuevo == 1) {
 					if (gallina.getHuevosAPoner() > 0) {
-						gallina.setHuevosAPoner(gallina.getHuevosAPoner() - 1);
-						Huevo huevo = new Huevo();
-						huevo.setGranjero(granjero);
-						huevo.setDiaNacimiento(huevo.diasParaNacer());
-						granjero.addHuevo(huevo);
-						contHuevoNuevo++;
+						if ((granjero.getHuevos().size() + 1) <= granjero.getCantHuevosMax()) {
+							gallina.setHuevosAPoner(gallina.getHuevosAPoner() - 1);
+							Huevo huevo = new Huevo();
+							huevo.setGranjero(granjero);
+							huevo.setDiaNacimiento(huevo.diasParaNacer());
+							granjero.addHuevo(huevo);
+							contHuevoNuevo++;
+						}
 					}
 				}
 			}
@@ -176,13 +187,15 @@ public class GranjeroController {
 				Huevo huevo = granjero.getHuevos().get(j);
 				huevo.setDiasDeVida(huevo.getDiasDeVida() + 1);
 				if (huevo.getDiaNacimiento() <= huevo.getDiasDeVida()) {
-					Gallina gallina = new Gallina();
-					gallina.setGranjero(granjero);
-					gallina.setDiaMuerte(gallina.definirDiaMuerte());
-					gallina.setHuevosAPoner(gallina.definirHuevosAPoner());
-					granjero.addGallina(gallina);
-					contGallinaNueva++;
-					granjero.getHuevos().remove(j);
+					if ((granjero.getGallinas().size() + 1) <= granjero.getCantGallinasMax()) {
+						Gallina gallina = new Gallina();
+						gallina.setGranjero(granjero);
+						gallina.setDiaMuerte(gallina.definirDiaMuerte());
+						gallina.setHuevosAPoner(gallina.definirHuevosAPoner());
+						granjero.addGallina(gallina);
+						contGallinaNueva++;
+						granjero.getHuevos().remove(j);
+					}
 				}
 			}
 			granjeroService.save(granjero);

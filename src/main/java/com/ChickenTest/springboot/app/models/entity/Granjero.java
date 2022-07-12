@@ -36,15 +36,34 @@ public class Granjero implements Serializable {
 	@Autowired
 	@OneToMany(mappedBy = "granjero", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Huevo> huevos;
-	
+
 	private int precioGallinaCompra;
-	
+
 	private int precioHuevoCompra;
-	
+
 	private int precioGallinaVenta;
-	
+
 	private int precioHuevoVenta;
 
+	private int cantGallinasMax;
+
+	private int cantHuevosMax;
+
+	public int getCantGallinasMax() {
+		return cantGallinasMax;
+	}
+
+	public void setCantGallinasMax(int cantGallinasMax) {
+		this.cantGallinasMax = cantGallinasMax;
+	}
+
+	public int getCantHuevosMax() {
+		return cantHuevosMax;
+	}
+
+	public void setCantHuevosMax(int cantHuevosMax) {
+		this.cantHuevosMax = cantHuevosMax;
+	}
 
 	public int getPrecioGallinaCompra() {
 		return precioGallinaCompra;
@@ -97,7 +116,7 @@ public class Granjero implements Serializable {
 	public void removeGallina() {
 		this.gallinas.remove(0);
 	}
-	
+
 	public void removeGallina(Gallina gallina) {
 		this.gallinas.remove(gallina);
 	}
@@ -105,7 +124,7 @@ public class Granjero implements Serializable {
 	public void removeHuevo() {
 		this.huevos.remove(0);
 	}
-	
+
 	public void removeHuevo(Huevo huevo) {
 		this.huevos.remove(huevo);
 	}
@@ -159,5 +178,5 @@ public class Granjero implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+
 }
