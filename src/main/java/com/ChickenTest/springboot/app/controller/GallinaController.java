@@ -15,40 +15,45 @@ public class GallinaController {
 	@Autowired
 	private IGranjeroService granjeroService;
 
-	
+	//Funcion para listar gallinas pertenecientes a un granjero
+	//Parametros: id granjero
 	@RequestMapping(value = "/listarGallinas/{id}")
 	public String listar(@PathVariable(value = "id") Long id, Model model) {
 		Granjero granjero = null;
-		granjero = granjeroService.findOne(id);
-		if (granjero.getGallinas().size() == 0) {
+		granjero = granjeroService.findOne(id); //Busca granjero por id
+		if (granjero.getGallinas().size() == 0) {//En caso de no haber gallinas muestra un mennsaje de error
 			model.addAttribute("mensaje", "No hay gallinas en la granja");
 		}
 		model.addAttribute("titulo", "Listado de gallinas");
 		model.addAttribute("granjero", granjero);
-		model.addAttribute("listaGallinas", granjero.getGallinas());
+		model.addAttribute("listaGallinas", granjero.getGallinas());//Se pasa la lista de gallinas
 		return "listarGallinas";
 	}
 	
+	//Funcion para volver a la granja desde el listar gallinas
+	//Parametros: id granjero
 	@RequestMapping(value = "/granja/{id}")
 	public String ver(@PathVariable(value = "id") Long id, Model model) {
 		Granjero granjero = null;
-		granjero = granjeroService.findOne(id);
+		granjero = granjeroService.findOne(id);//Busca granjero por id
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("titulo", "Granja");
 		return "granja";
 	}
 	
+	//Funcion para vender una determinada gallina perteneciente a un granjero
+	//Parametros: id granjero, id gallina
 	@RequestMapping(value = "/listarGallinas/venderGallina/{granjeroId}/{gallinaId}")
 	public String venderGallina(@PathVariable(value = "granjeroId") Long granjeroId,@PathVariable(value = "gallinaId") Long gallinaId, Model model) {
 		Granjero granjero = null;
-		granjero = granjeroService.findOne(granjeroId);
-		for (int i = 0 ; i < granjero.getGallinas().size() ; i ++) {
+		granjero = granjeroService.findOne(granjeroId);//Busca granjero por id
+		for (int i = 0 ; i < granjero.getGallinas().size() ; i ++) {//Busca el id de la gallina recibida como parametro en las gallinas del granjero
 			if (granjero.getGallinas().get(i).getId() == gallinaId) {
 				Gallina gallina = granjero.getGallinas().get(i);
-				granjero.removeGallina(gallina);
+				granjero.removeGallina(gallina);//remueve la gallina pasada como parametro
 			}
 		}
-		granjero.setDinero(granjero.getDinero() + granjero.getPrecioGallinaCompra());
+		granjero.setDinero(granjero.getDinero() + granjero.getPrecioGallinaCompra());//suma el dinero de la venta de la gallina
 		granjeroService.save(granjero);
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("titulo", "Listado de gallinas");
