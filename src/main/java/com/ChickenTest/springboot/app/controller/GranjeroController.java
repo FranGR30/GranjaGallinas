@@ -34,12 +34,6 @@ public class GranjeroController {
 	//Parametros: objeto granjero
 	@RequestMapping(value = "/index", method = RequestMethod.POST)
 	public String guardar(Model model, Granjero granjero) {
-		granjero.setPrecioGallinaCompra(50);
-		granjero.setPrecioGallinaVenta(30);
-		granjero.setPrecioHuevoCompra(20);
-		granjero.setPrecioHuevoVenta(10);
-		granjero.setCantGallinasMax(10);
-		granjero.setCantHuevosMax(20);
 		granjeroService.save(granjero);
 		model.addAttribute("titulo", "Granja");
 		return "granja";

@@ -137,6 +137,12 @@ public class Granjero implements Serializable {
 		this.gallinas = new ArrayList<Gallina>();
 		this.huevos = new ArrayList<Huevo>();
 		this.dinero = 100;
+		this.cantGallinasMax = 10;
+		this.cantHuevosMax = 20;
+		this.precioGallinaCompra = 50;
+		this.precioGallinaVenta = 40;
+		this.precioHuevoCompra = 20;
+		this.precioHuevoVenta = 15;
 	}
 
 	public void setId(long id) {
