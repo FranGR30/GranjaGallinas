@@ -53,7 +53,7 @@ public class GallinaController {
 				granjero.removeGallina(gallina);//remueve la gallina pasada como parametro
 			}
 		}
-		granjero.setDinero(granjero.getDinero() + granjero.getPrecioGallinaCompra());//suma el dinero de la venta de la gallina
+		granjero.setDinero(granjero.getDinero() + granjero.precioGallinaVenta);//suma el dinero de la venta de la gallina
 		granjeroService.save(granjero);
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("titulo", "Listado de gallinas");

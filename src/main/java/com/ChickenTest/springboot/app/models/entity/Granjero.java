@@ -18,6 +18,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 @Table(name = "granjeros")
 public class Granjero implements Serializable {
+	
+	public final int cantGallinasMax = 10;
+	
+	public final int cantHuevosMax = 20;
+	
+	public final int precioGallinaCompra = 50;
+	
+	public final int precioGallinaVenta = 40;
+	
+	public final int precioHuevoCompra = 20;
+	
+	public final int precioHuevoVenta = 10;
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,66 +48,6 @@ public class Granjero implements Serializable {
 	@Autowired
 	@OneToMany(mappedBy = "granjero", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Huevo> huevos;
-
-	private int precioGallinaCompra;
-
-	private int precioHuevoCompra;
-
-	private int precioGallinaVenta;
-
-	private int precioHuevoVenta;
-
-	private int cantGallinasMax;
-
-	private int cantHuevosMax;
-
-	public int getCantGallinasMax() {
-		return cantGallinasMax;
-	}
-
-	public void setCantGallinasMax(int cantGallinasMax) {
-		this.cantGallinasMax = cantGallinasMax;
-	}
-
-	public int getCantHuevosMax() {
-		return cantHuevosMax;
-	}
-
-	public void setCantHuevosMax(int cantHuevosMax) {
-		this.cantHuevosMax = cantHuevosMax;
-	}
-
-	public int getPrecioGallinaCompra() {
-		return precioGallinaCompra;
-	}
-
-	public void setPrecioGallinaCompra(int precioGallinaCompra) {
-		this.precioGallinaCompra = precioGallinaCompra;
-	}
-
-	public int getPrecioHuevoCompra() {
-		return precioHuevoCompra;
-	}
-
-	public void setPrecioHuevoCompra(int precioHuevoCompra) {
-		this.precioHuevoCompra = precioHuevoCompra;
-	}
-
-	public int getPrecioGallinaVenta() {
-		return precioGallinaVenta;
-	}
-
-	public void setPrecioGallinaVenta(int precioGallinaVenta) {
-		this.precioGallinaVenta = precioGallinaVenta;
-	}
-
-	public int getPrecioHuevoVenta() {
-		return precioHuevoVenta;
-	}
-
-	public void setPrecioHuevoVenta(int precioHuevoVenta) {
-		this.precioHuevoVenta = precioHuevoVenta;
-	}
 
 	public int cantHuevos() {
 		return this.huevos.size();
@@ -133,16 +85,11 @@ public class Granjero implements Serializable {
 		return id;
 	}
 
+	//Contructor de la clase granjero
 	public Granjero() {
 		this.gallinas = new ArrayList<Gallina>();
 		this.huevos = new ArrayList<Huevo>();
 		this.dinero = 100;
-		this.cantGallinasMax = 10;
-		this.cantHuevosMax = 20;
-		this.precioGallinaCompra = 50;
-		this.precioGallinaVenta = 40;
-		this.precioHuevoCompra = 20;
-		this.precioHuevoVenta = 15;
 	}
 
 	public void setId(long id) {

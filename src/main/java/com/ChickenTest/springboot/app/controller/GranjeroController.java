@@ -65,13 +65,13 @@ public class GranjeroController {
 		Granjero granjero = null;
 		granjero = granjeroService.findOne(id);//Busca granjero por id
 		if (tipo == 0) {//En caso de que el tipo sea = 0 procede a agregar gallinas
-			if ((granjero.getGallinas().size() + cantGallinaTienda) > granjero.getCantGallinasMax()) {//En caso se superar la cantidad de gallinas maximas en inventario, arroja error
+			if ((granjero.getGallinas().size() + cantGallinaTienda) > granjero.cantGallinasMax) {//En caso se superar la cantidad de gallinas maximas en inventario, arroja error
 				model.addAttribute("mensajeGallina",
 						"La cantidad de gallinas a comprar supera la cantidad maxima de gallinas posibles en granja ("
-								+ granjero.getCantGallinasMax() + " gallinas)");
-			} else if (cantGallinaTienda * granjero.getPrecioGallinaCompra() <= granjero.getDinero()) {
+								+ granjero.cantGallinasMax + " gallinas)");
+			} else if (cantGallinaTienda * granjero.precioGallinaCompra <= granjero.getDinero()) {
 				crearObjetoIterable(cantGallinaTienda,granjero,tipo);//La funcion crea la cantidad de gallinas a comprar por el usuario y las asigna al granjero
-				granjero.setDinero(granjero.getDinero() - (granjero.getPrecioGallinaCompra() * cantGallinaTienda));//Se descuenta el dinero del granjero
+				granjero.setDinero(granjero.getDinero() - (granjero.precioGallinaCompra * cantGallinaTienda));//Se descuenta el dinero del granjero
 				granjeroService.save(granjero);
 				cantGallinaTienda = 0;//Se resetea el contador de la tienda
 			} else {//En caso de no tener dinero suficiente arroja error
@@ -79,13 +79,13 @@ public class GranjeroController {
 						"Dinero insuficiente para comprar " + cantGallinaTienda + " gallina/s");
 			}
 		} else if (tipo == 1) {//en caso de que el tipo sea = 1 procede a agregar huevos
-			if ((granjero.getHuevos().size() + cantHuevoTienda) > granjero.getCantHuevosMax()) {//En caso se superar la cantidad de huevos maximos en inventario, arroja error
+			if ((granjero.getHuevos().size() + cantHuevoTienda) > granjero.cantHuevosMax) {//En caso se superar la cantidad de huevos maximos en inventario, arroja error
 				model.addAttribute("mensajeHuevo",
 						"La cantidad de huevos a comprar supera la cantidad maxima de huevos posibles en granja ("
-								+ granjero.getCantHuevosMax() + " huevos)");
-			} else if (cantHuevoTienda * granjero.getPrecioHuevoCompra() <= granjero.getDinero()) {
+								+ granjero.cantHuevosMax + " huevos)");
+			} else if (cantHuevoTienda * granjero.precioHuevoCompra <= granjero.getDinero()) {
 				crearObjetoIterable(cantHuevoTienda,granjero,tipo);//La funcion crea la cantidad de huevos a comprar por el usuario y los asigna al granjero
-				granjero.setDinero(granjero.getDinero() - (cantHuevoTienda * granjero.getPrecioHuevoCompra()));//Se descuenta el dinero del granjero
+				granjero.setDinero(granjero.getDinero() - (cantHuevoTienda * granjero.precioHuevoCompra));//Se descuenta el dinero del granjero
 				granjeroService.save(granjero);
 				cantHuevoTienda = 0;//Se resetea el contador de la tienda
 			} else {//En caso de no tener dinero suficiente arroja error
@@ -111,7 +111,7 @@ public class GranjeroController {
 		if (tipo == 0) {//Valida si es gallina
 			if (granjero.getGallinas().size() >= cantGallinaTienda) {//Valida si tiene la cantidad de producto que se quiere vender
 				eliminarObjetoIterable(cantGallinaTienda,granjero,tipo);//Elimina la cantidad a vender seleccionada por el usuario
-				granjero.setDinero(granjero.getDinero() + (granjero.getPrecioGallinaVenta() * cantGallinaTienda));//Suma el dinero
+				granjero.setDinero(granjero.getDinero() + (granjero.precioGallinaVenta * cantGallinaTienda));//Suma el dinero
 				granjeroService.save(granjero);
 				cantGallinaTienda = 0;//Resetea el contador de la tienda
 			} else {//Mensaje de error en caso de no tener la cantidad del producto que se quiere vender
@@ -120,7 +120,7 @@ public class GranjeroController {
 		} else if (tipo == 1) {//Valida si es huevo
 			if (granjero.getHuevos().size() >= cantHuevoTienda) {
 				eliminarObjetoIterable(cantHuevoTienda,granjero,tipo);//Elimina la cantidad a vender seleccionada por el usuario
-				granjero.setDinero(granjero.getDinero() + (granjero.getPrecioHuevoVenta() * cantHuevoTienda));//Suma el dinero
+				granjero.setDinero(granjero.getDinero() + (granjero.precioHuevoVenta * cantHuevoTienda));//Suma el dinero
 				granjeroService.save(granjero);
 				cantHuevoTienda = 0;//Resetea el contador de la tienda
 			} else {//Mensaje de error en caso de no tener la cantidad del producto que se quiere vender
@@ -155,7 +155,7 @@ public class GranjeroController {
 				int ponerHuevo = numAleatorio.nextInt(1 - 0 + 1) + 0;
 				if (ponerHuevo == 1) {//En caso de que el numero random es 1, pone un huevo
 					if (gallina.getHuevosAPoner() > 0) {
-						if ((granjero.getHuevos().size() + 1) <= granjero.getCantHuevosMax()) {//Valida que no se pase del maximo de huevos posibles para el granjero
+						if ((granjero.getHuevos().size() + 1) <= granjero.cantHuevosMax) {//Valida que no se pase del maximo de huevos posibles para el granjero
 							gallina.setHuevosAPoner(gallina.getHuevosAPoner() - 1);//Descuenta 1 de los huevos a poner
 							crearHuevo(granjero);
 							contHuevoNuevo++;
@@ -170,7 +170,7 @@ public class GranjeroController {
 				Huevo huevo = granjero.getHuevos().get(j);//Identifica al huevo
 				huevo.setDiasDeVida(huevo.getDiasDeVida() + 1);//suma 1 a los dias de vida del huevo
 				if (huevo.getDiaNacimiento() <= huevo.getDiasDeVida()) {//Verifica si el huevo tiene dias de vida suficientes para nacer
-					if ((granjero.getGallinas().size() + 1) <= granjero.getCantGallinasMax()) {
+					if ((granjero.getGallinas().size() + 1) <= granjero.cantGallinasMax) {
 						crearGallina(granjero);
 						contGallinaNueva++;
 						granjero.getHuevos().remove(j);

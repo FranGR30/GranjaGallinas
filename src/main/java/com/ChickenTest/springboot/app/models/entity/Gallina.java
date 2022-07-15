@@ -14,6 +14,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "gallinas")
 public class Gallina implements Serializable {
+	
+	public final int maxHuevosAPoner = 2;
+	
+	public final int minHuevosAPoner = 1;
+	
+	public final int maxDiaDeMuerte = 5;
+	
+	public final int minDiaDeMuerte = 5;
 
 	private static final long serialVersionUID = 1L;
 
@@ -57,31 +65,22 @@ public class Gallina implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
+	
+	//Funcion para determinar el dia de muerte de la gallina (numero random entre maxDiaDeMuerte y minDiaDeMuerte)
 	public int definirDiaMuerte() {
 		Random numAleatorio = new Random();
-		int diaMuerte = numAleatorio.nextInt(5 - 3 + 1) + 3;
+		int diaMuerte = numAleatorio.nextInt(maxDiaDeMuerte - minDiaDeMuerte + 1) + minDiaDeMuerte;
 		return diaMuerte;
 	}
 	
+	//Funcion para determinar la cantidad de huevos a poner por la gallina (numero random entre maxHuevosAPoner y minHuevosAPoner)
 	public int definirHuevosAPoner() {
 		Random numAleatorio = new Random();
-		int huevosAPoner = numAleatorio.nextInt(2 - 1 + 1) + 1;
+		int huevosAPoner = numAleatorio.nextInt(maxHuevosAPoner - minHuevosAPoner + 1) + minHuevosAPoner;
 		return huevosAPoner;
 	}
 
-	public Gallina(Granjero granjero) {
-		this.diasDeVida = 0;
-		this.diaMuerte = 10;//definirDiaMuerte();
-		this.huevosAPoner = 2;//definirHuevosAPoner();
-		this.granjero = granjero;
-	}
-
 	public Gallina() {
-	}
-
-	public void morir(Gallina gallina) {
-		
 	}
 
 	public int getDiaMuerte() {

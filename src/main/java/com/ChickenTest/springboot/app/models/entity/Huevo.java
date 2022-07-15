@@ -15,6 +15,10 @@ import javax.persistence.Table;
 @Table(name = "huevos")
 public class Huevo implements Serializable {
 
+	public final int maxDiaDeNacimiento = 4;
+	
+	public final int minDiaDeNacimiento = 3;
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -64,9 +68,10 @@ public class Huevo implements Serializable {
 		return serialVersionUID;
 	}
 	
+	//Funcion para determinar el dia a nacer del huevo (numero random entre maxDiaDeNacimiento y minDiaDeNacimiento)
 	public int diasParaNacer() {
 		Random numAleatorio = new Random();
-		int diaNacimiento = numAleatorio.nextInt(4 - 3 + 1) + 3;
+		int diaNacimiento = numAleatorio.nextInt(maxDiaDeNacimiento - minDiaDeNacimiento + 1) + minDiaDeNacimiento;
 		return diaNacimiento;
 	}
 

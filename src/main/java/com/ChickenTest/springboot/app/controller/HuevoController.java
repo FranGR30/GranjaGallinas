@@ -43,7 +43,7 @@ public class HuevoController {
 				granjero.removeHuevo(huevo);//remueve el huevo pasada como parametro
 			}
 		}
-		granjero.setDinero(granjero.getDinero() + granjero.getPrecioHuevoCompra());//suma el dinero de la venta del huevo
+		granjero.setDinero(granjero.getDinero() + granjero.precioHuevoVenta);//suma el dinero de la venta del huevo
 		granjeroService.save(granjero);
 		model.addAttribute("granjero", granjero);
 		model.addAttribute("titulo", "Listado de huevos");
