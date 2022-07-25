@@ -18,17 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Entity
 @Table(name = "granjeros")
 public class Granjero implements Serializable {
-	
+
 	public final int cantGallinasMax = 10;
-	
+
 	public final int cantHuevosMax = 20;
-	
+
 	public final int precioGallinaCompra = 50;
-	
+
 	public final int precioGallinaVenta = 40;
-	
+
 	public final int precioHuevoCompra = 20;
-	
+
 	public final int precioHuevoVenta = 10;
 
 	private static final long serialVersionUID = 1L;
@@ -65,18 +65,30 @@ public class Granjero implements Serializable {
 		this.huevos.add(huevo);
 	}
 
+	// Funcion para eliminar el primer elemento de la lista de gallinas del granjero
+	// Parametro:
 	public void removeGallina() {
 		this.gallinas.remove(0);
 	}
 
+	// Funcion para eliminar una gallina determinada dentro de la lista de gallinas
+	// del granjero
+	// Parametro: gallina
+	// Por sobre carga de metodo determina que metodo utilizar
 	public void removeGallina(Gallina gallina) {
 		this.gallinas.remove(gallina);
 	}
 
+	// Funcion para eliminar el primer elemento de la lista de huevos del granjero
+	// Parametro:
 	public void removeHuevo() {
 		this.huevos.remove(0);
 	}
 
+	// Funcion para eliminar un huevo determinado dentro de la lista de huevos del
+	// granjero
+	// Parametro: huevo
+	// Por sobre carga de metodo determina que metodo utilizar
 	public void removeHuevo(Huevo huevo) {
 		this.huevos.remove(huevo);
 	}
@@ -85,7 +97,7 @@ public class Granjero implements Serializable {
 		return id;
 	}
 
-	//Contructor de la clase granjero
+	// Contructor de la clase granjero
 	public Granjero() {
 		this.gallinas = new ArrayList<Gallina>();
 		this.huevos = new ArrayList<Huevo>();
@@ -130,6 +142,25 @@ public class Granjero implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	// Funcion para crear gallina
+	// Parametro: granjero
+	public void crearGallina(Granjero granjero) {
+		Gallina gallina = new Gallina();
+		gallina.setDiaMuerte(gallina.definirDiaMuerte());
+		gallina.setHuevosAPoner(gallina.definirHuevosAPoner());
+		gallina.setGranjero(granjero);
+		granjero.addGallina(gallina);
+	}
+
+	// Funcion para crear huevo
+	// Parametro: granjero
+	public void crearHuevo(Granjero granjero) {
+		Huevo huevo = new Huevo();
+		huevo.setGranjero(granjero);
+		huevo.setDiaNacimiento(huevo.diasParaNacer());
+		granjero.addHuevo(huevo);
 	}
 
 }
