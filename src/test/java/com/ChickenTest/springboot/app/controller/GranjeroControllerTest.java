@@ -35,6 +35,9 @@ class GranjeroControllerTest {
 	private Gallina gallina;
 
 	@Test
+	//Test para evaluar el caso en el que no hay dinero suficiente para comprar 1 gallina
+	//Se evalua que el dinero no se modifique
+	//Se evalua que la cantidad de gallinas no se modifique
 	void comprarTest_dineroInsuficienteParaComprarGallina() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -47,6 +50,9 @@ class GranjeroControllerTest {
 	}
 
 	@Test
+	//Test para evaluar el caso en el que no hay dinero suficiente para comprar 1 huevo
+	//Se evalua que el dinero no se modifique
+	//Se evalua que la cantidad de huevos no se modifique
 	void comprarTest_dineroInsuficienteParaComprarHuevo() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -59,6 +65,9 @@ class GranjeroControllerTest {
 	}
 
 	@Test
+	//Test para comprar 1 gallina
+	//Se evalue que se reste el dinero correspondiente
+	//Se evalua que se sume 1 gallina al stock de gallinas
 	void comprarTest_Comprar1Gallina() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -71,6 +80,9 @@ class GranjeroControllerTest {
 	}
 
 	@Test
+	//Test para comprar 1 huevo
+	//Se evalue que se reste el dinero correspondiente
+	//Se evalua que se sume 1 huevo al stock de huevos
 	void comprarTest_Comprar1Huevo() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -83,7 +95,10 @@ class GranjeroControllerTest {
 	}
 
 	@Test
-	void comprarTest_Comprar1VariasGallinas() {
+	//Test para comprar varias gallinas
+	//Se evalue que se reste el dinero correspondiente
+	//Se evalua que el stock de gallinas sea el que se compro
+	void comprarTest_ComprarVariasGallinas() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
 		when(granjeroService.findOne(1L)).thenReturn(granjero);
@@ -95,6 +110,9 @@ class GranjeroControllerTest {
 	}
 
 	@Test
+	//Test para comprar varios huevos
+	//Se evalue que se reste el dinero correspondiente
+	//Se evalua que el stock de huevos sea el que se compro
 	void comprarTest_ComprarVariosHuevos() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -107,6 +125,9 @@ class GranjeroControllerTest {
 	}
 
 	@Test
+	//Test para vender varios huevos
+	//Se evalua que se reste la cantidad de huevos del stock
+	//Se evalua que se sume la cantidad de dinero equivalente a la venta
 	void venderTest_VenderVariosHuevos() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -121,6 +142,9 @@ class GranjeroControllerTest {
 	}
 
 	@Test
+	//Test para vender varias gallinas
+	//Se evalua que se reste la cantidad de gallinas del stock
+	//Se evalua que se sume la cantidad de dinero equivalente a la venta
 	void venderTest_VenderVariasGallinas() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -135,6 +159,9 @@ class GranjeroControllerTest {
 	}
 
 	@Test
+	//Test para evaluar cuando no hay suficiente stock de gallinas para vender
+	//Se evalua que la cantidad de gallinas no disminulla cuando se quiere vender mas del stock disponible
+	//Se evalua que la cantidad de dinero no se modifique
 	void venderTest_gallinasInsuficientesEnStock() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -148,6 +175,9 @@ class GranjeroControllerTest {
 	}
 
 	@Test
+	//Test para evaluar cuando no hay suficiente stock de huevos para vender
+	//Se evalua que la cantidad de huevos no disminulla cuando se quiere vender mas del stock disponible
+	//Se evalua que la cantidad de dinero no se modifique
 	void venderTest_huevosInsuficientesEnStock() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -161,6 +191,9 @@ class GranjeroControllerTest {
 	}
 	
 	@Test
+	//Test para evaluar el metodo dia siguiente
+	//Se evalue que sume un dia de vida a cada gallina y huevo
+	//Se evalua que el dinero no se modifique
 	void diaSiguienteTest() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -175,6 +208,7 @@ class GranjeroControllerTest {
 	}
 	
 	@Test
+	//Test para evaluar metodo para crear varias gallinas
 	void crearObjetoIterableTest_crearGallinas() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -183,6 +217,7 @@ class GranjeroControllerTest {
 	}
 	
 	@Test
+	//Test para evaluar metodo para elminar varias gallinas
 	void eliminarObjetoIterableTest_eliminarGallinas() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -192,6 +227,7 @@ class GranjeroControllerTest {
 	}
 	
 	@Test
+	//Test para evaluar metodo para crear varios huevos
 	void crearObjetoIterableTest_crearHuevos() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
@@ -200,6 +236,7 @@ class GranjeroControllerTest {
 	}
 	
 	@Test
+	//Test para evaluar metodo para eliminar varios huevos
 	void eliminarObjetoIterableTest_eliminarHuevos() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);

@@ -38,6 +38,9 @@ class HuevoControllerTest {
 	private Gallina gallina;
 
 	@Test
+	//Test para evaluar vender un huevo por su ID
+	//Evalue que se reste el huevo del stock de huevos totales
+	//Se evalua que se sume la cantidad de dinero equivalente a la venta
 	void venderHuevoTest() {
 		Granjero granjero = new Granjero();
 		granjero.setId(1);
