@@ -86,8 +86,10 @@ public class GranjeroController {
 																												// del
 																												// granjero
 				granjeroService.save(granjero);
+				System.out.println("se compro "+ cantGallinaTienda +" gallina/s");
 				cantGallinaTienda = 0;// Se resetea el contador de la tienda
 			} else {// En caso de no tener dinero suficiente arroja error
+				System.out.println("Dinero insuficiente para comprar " + cantGallinaTienda + " gallina/s");
 				model.addAttribute("mensajeGallina",
 						"Dinero insuficiente para comprar " + cantGallinaTienda + " gallina/s");
 			}
@@ -108,8 +110,10 @@ public class GranjeroController {
 																											// del
 																											// granjero
 				granjeroService.save(granjero);
+				System.out.println("se compro "+ cantHuevoTienda + " huevo/s");
 				cantHuevoTienda = 0;// Se resetea el contador de la tienda
 			} else {// En caso de no tener dinero suficiente arroja error
+				System.out.println("Dinero insuficiente para comprar " + cantHuevoTienda + " huevo/s");
 				model.addAttribute("mensajeHuevo", "Dinero insuficiente para comprar " + cantHuevoTienda + " huevo/s");
 			}
 		}
@@ -138,10 +142,12 @@ public class GranjeroController {
 																			// por el usuario
 				granjero.setDinero(granjero.getDinero() + (granjero.precioGallinaVenta * cantGallinaTienda));// Suma el
 																												// dinero
+				System.out.println("Se vendieron "+ cantGallinaTienda + " huevo/s a un precio de " + granjero.getDinero());
 				granjeroService.save(granjero);
 				cantGallinaTienda = 0;// Resetea el contador de la tienda
 			} else {// Mensaje de error en caso de no tener la cantidad del producto que se quiere
 					// vender
+				System.out.println("No tienes esa cantidad de gallinas");
 				model.addAttribute("mensajeGallina", "No tienes esa cantidad de gallinas");
 			}
 		} else if (tipo == 1) {// Valida si es huevo
@@ -150,10 +156,12 @@ public class GranjeroController {
 																		// el usuario
 				granjero.setDinero(granjero.getDinero() + (granjero.precioHuevoVenta * cantHuevoTienda));// Suma el
 																											// dinero
+				System.out.println("Se vendieron "+ cantHuevoTienda + " huevo/s a un precio de " + granjero.getDinero());
 				granjeroService.save(granjero);
 				cantHuevoTienda = 0;// Resetea el contador de la tienda
 			} else {// Mensaje de error en caso de no tener la cantidad del producto que se quiere
 					// vender
+				System.out.println("No tienes esa cantidad de huevos");
 				model.addAttribute("mensajeHuevo", "No tienes esa cantidad de huevos");
 			}
 		}

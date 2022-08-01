@@ -11,10 +11,10 @@ import com.ChickenTest.springboot.app.models.entity.Granjero;
 
 @Service
 public class GranjeroServiceImpl implements IGranjeroService {
-	
+
 	@Autowired
 	private IGranjeroDao granjeroDao;
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<Granjero> findAll() {

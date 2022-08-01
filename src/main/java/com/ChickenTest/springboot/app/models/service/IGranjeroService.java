@@ -13,4 +13,5 @@ public interface IGranjeroService {
 	public Granjero findOne(Long id);
 	
 	public void delete(Long id);
+	
 }

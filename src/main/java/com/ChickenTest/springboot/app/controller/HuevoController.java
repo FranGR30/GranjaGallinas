@@ -34,7 +34,7 @@ public class HuevoController {
 	//Funcion para vender un determinado huevo perteneciente a un granjero
 	//Parametros: id granjero, id huevo
 	@RequestMapping(value = "/listarHuevos/venderHuevo/{granjeroId}/{huevoId}")
-	public String venderGallina(@PathVariable(value = "granjeroId") Long granjeroId,@PathVariable(value = "huevoId") Long huevoId, Model model) {
+	public String venderHuevo(@PathVariable(value = "granjeroId") Long granjeroId,@PathVariable(value = "huevoId") Long huevoId, Model model) {
 		Granjero granjero = null;
 		granjero = granjeroService.findOne(granjeroId);//Busca granjero por id
 		for (int i = 0 ; i < granjero.getHuevos().size() ; i ++) {//Busca el id del huevo recibido como parametro en las gallinas del granjero
